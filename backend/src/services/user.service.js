@@ -16,11 +16,13 @@ const isPasswordCorrect = async (password,userPassword)=>{
 }
 
 //Generating Access token
-const generateAccessToken = (userId, username)=>{
+const generateAccessToken =async(userId)=>{
+  const user = await User.findById(userId)
+  if (!user) throw new Error("User not found");
     return jwt.sign(
       {
-        _id: userId,
-        username: username,
+        _id: user._id,
+        username: user.username,
       },
       process.env.ACCESS_TOKEN_SECRET,
       {
@@ -30,11 +32,13 @@ const generateAccessToken = (userId, username)=>{
 }
 
 //Generating Refresh Token
-const generateRefreshToken = (userId, username) => {
+const generateRefreshToken = async (userId) => {
+  const user = await User.findById(userId);
+  if (!user) throw new Error("User not found");
   return jwt.sign(
     {
-      _id: userId,
-      username: username,
+      _id: user._id,
+      username: user.username,
     },
     process.env.REFRESH_TOKEN_SECRET,
     {

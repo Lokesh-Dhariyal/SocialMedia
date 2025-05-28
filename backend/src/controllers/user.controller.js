@@ -12,15 +12,15 @@ const generateAccessAndRefreshTokens = async (userId)=>{
     if(!user){
       throw new apiError(400,"User not found")
     }
-    const accessToken = generateAccessToken();
-    const refreshToken = generateRefreshToken();
+    const accessToken =await generateAccessToken(userId);
+    const refreshToken =await generateRefreshToken(userId);
 
     user.refreshToken = refreshToken
-    user.save({validateBeforeSave:false})
+    await user.save({validateBeforeSave:false})
 
     return {refreshToken,accessToken}
   } catch (error) {
-    throw new apiError(400,"Something went wrong while creating tokens")
+    throw new apiError(500,"Something went wrong while creating tokens")
   }
 }
 
@@ -116,19 +116,45 @@ const loginUser = asyncHandler(async (req,res)=>{
     throw new apiError(400, "Invalid Credentials");
   }
   //generate tokens
-  const {refreshToken,accessToken} = generateAccessAndRefreshTokens(user._id);
+  const { refreshToken, accessToken } = await generateAccessAndRefreshTokens(
+    user._id,
+    user.username
+  );
 
   const logginedUser = await User.findById(user._id).select("-password -refreshToken")
 
   return res
-  .status(200)
-  .cookie("accessToken",accessToken,options)
-  .cookie("refreshToken",refreshToken,options)
-  .json(new apiResponse(200,logginedUser,"User loggined successfully"))
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new apiResponse(
+        200,
+        {
+        user: logginedUser,accessToken,refreshToken
+        },
+        "User logged In successfully"
+      )
+    );
 })
 
 //⁡⁢⁢⁢Logout User⁡
 const logoutUser = asyncHandler(async (req,res)=>{
-  
+  const user = req.user
+  await User.findByIdAndUpdate(
+    user._id,
+    {
+      $unset: {refreshToken : ""}
+    },
+    {
+      new: true,
+    }
+  );
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new apiResponse(200, {}, "User logout successfully"));
 })
-export {registerUser,loginUser}
+export {registerUser,loginUser,logoutUser}
