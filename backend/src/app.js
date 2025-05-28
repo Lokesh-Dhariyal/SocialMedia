@@ -1,0 +1,21 @@
+import express from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+
+const app = express()
+const limit = "16kb"
+
+app.use(cors({
+    origin:process.env.ORIGIN,
+    credentials:true
+}))
+
+app.use(express.json({ limit: limit })); // this is used to set the amont of json accepted at a time
+app.use(express.urlencoded({ extended: true, limit: limit })); //this is for the encoded value in the url like %20 for space.
+app.use(express.static("public"));
+app.use(cookieParser());
+
+import { userRoute } from "./routes/user.route.js";
+app.use("/api/v1/user",userRoute)
+
+export {app}
