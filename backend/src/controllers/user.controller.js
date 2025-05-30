@@ -74,8 +74,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     email: email.toLowerCase(),
     password: hashedPassword,
     profilePhoto:"https://res.cloudinary.com/dhzxvjygz/image/upload/v1748512530/userImage_abfe44.png",
-    cover: "",
-    bio:""
+    cover:""
   });
 
   const createdUser = await User.findById(user._id).select(
@@ -344,7 +343,12 @@ const deleteCover = asyncHandler(async (req, res) => {
     .json(new apiResponse(200, {}, "cover picture deleted successfully"));
 });
 
-
+//⁡⁢⁢⁢𝗖𝘂𝗿𝗿𝗲𝗻𝘁 𝗨𝘀𝗲𝗿 𝗶𝗻𝗳𝗼⁡
+const currentUser = asyncHandler(async(req,res)=>{
+  return res
+  .status(200)
+  .json(new apiResponse(200,req.user,"Current User fetched successfully"))
+})
 export {
   registerUser,
   loginUser,
@@ -354,4 +358,5 @@ export {
   updateProfile,
   deleteProfilePhoto,
   deleteCover,
+  currentUser,
 };

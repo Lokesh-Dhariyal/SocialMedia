@@ -37,6 +37,36 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
+    posts:[
+      {
+        type:Schema.Types.ObjectId,
+        ref:"Post"
+      }
+    ],
+    postCount:{
+      type:Number,
+      default:0
+    },
+    followers:[
+      {
+        type:Schema.Types.ObjectId,
+        ref:"User"
+      }
+    ],
+    followerCount:{
+      type:Number,
+      default:0
+    },
+    following:[
+      {
+        type:Schema.Types.ObjectId,
+        ref:"User"
+      }
+    ],
+    followingCount:{
+      type:Number,
+      default:0
+    }
   },
   { timestamps: true }
 ); 
