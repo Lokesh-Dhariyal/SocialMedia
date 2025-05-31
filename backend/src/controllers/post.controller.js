@@ -7,7 +7,7 @@ import { User } from "../models/user.model.js";
 
 //⁡⁢⁢⁢𝗖𝗿𝗲𝗮𝘁𝗲 𝗣𝗼𝘀𝘁⁡
 const createPost = asyncHandler(async(req,res)=>{
-    const {discription} = req.body
+    const {description} = req.body
     const userId = req.user._id
 
     let postLocalPath;
@@ -28,10 +28,10 @@ const createPost = asyncHandler(async(req,res)=>{
         throw new apiError(400,"Uploading failed")
     }
     const post = await Post.create({
-        content:postContent?.url,
-        discription: discription || "",
-        owner: userId,
-    })
+      content: postContent?.url,
+      description: description || "",
+      owner: userId,
+    });
     if(!post){
         throw new apiError(400,"Something went wrong while creating post")
     }
@@ -49,7 +49,7 @@ const createPost = asyncHandler(async(req,res)=>{
 
 //⁡⁢⁢⁢𝗨𝗽𝗱𝗮𝘁𝗲 𝗣𝗼𝘀𝘁⁡
 const updatePost = asyncHandler(async(req,res)=>{
-    const {discription} = req.body
+    const { description } = req.body;
     const postId = req.params.id
     if (!postId) {
       throw new apiError(400, "Invalid url");
@@ -61,7 +61,7 @@ const updatePost = asyncHandler(async(req,res)=>{
     if (post.owner.toString() !== req.user._id.toString()) {
       throw new apiError(400, "You're not allowed to update this post");
     }
-    post.discription = discription;
+    post.description = description;
     await post.save({validateBeforeSave:false})
 
     return res
@@ -96,4 +96,56 @@ const deletePost = asyncHandler(async(req,res)=>{
     .status(200)
     .json(new apiResponse(200,{},"Post deleted Successfully"))
 })
-export {createPost,updatePost,deletePost}
+
+//⁡⁢⁢⁢𝗦𝗵𝗼𝘄 𝗣𝗼𝘀𝘁𝘀 𝗶𝗻 𝘁𝗵𝗲 𝗵𝗼𝗺𝗲⁡⁢⁣⁣(𝗛𝗢𝗠𝗘 𝗣𝗔𝗚𝗘)⁡
+const allPosts = asyncHandler(async(req,res)=>{
+  const user = req.user;
+  // const following = user.following
+  // let posts = [{}]
+  // await following.map(async(person)=>{
+  //    posts.push(await Post.findById(following[person]._id))
+  // })
+
+  // if(!posts || posts.length()==0){
+  //   throw new apiError(400,"No post available")
+  // }
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const UsersId = [user._id, ...user.following]; //users we want posts from: current user + users they follow
+
+  const totalPosts = await Post.countDocuments({ owner: { $in: UsersId } });
+
+  const posts = await Post.find({ owner: { $in: UsersId } })
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .populate("owner", "username profilePhoto")
+    .populate({path: "comments",
+      populate: {
+        path: "commentedBy",
+        select: "username profilePhoto",
+      },
+    })
+    .lean(); //Return plain JS objects
+
+  if (!posts || posts.length === 0) {
+    throw new apiError(400, "No posts available");
+  }
+  //Pagination is the process of splitting large sets of data into smaller chunks (pages) — instead of loading everything at once.
+  return res.status(200).json(
+    new apiResponse(
+      200,
+      {
+        posts,
+        pagination: {
+          totalPosts,
+          currentPage: page,
+          totalPages: Math.ceil(totalPosts / limit),
+        },
+      },
+      "All posts are fetched"
+    )
+  );
+})
+
+export {createPost,updatePost,deletePost,allPosts}

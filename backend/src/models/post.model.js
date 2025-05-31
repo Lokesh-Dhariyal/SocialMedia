@@ -6,7 +6,7 @@ const postSchema = new Schema(
       type: String,
       require: true,
     },
-    discription: {
+    description: {
       type: String,
     },
     owner: {

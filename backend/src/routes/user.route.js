@@ -10,9 +10,12 @@ import {
   deleteProfilePhoto,
   deleteCover,
   currentUser,
+  userInfo,
+  searchUser,
 } from "../controllers/user.controller.js";
 import {jwtVerification} from "../middlewares/auth.middleware.js"
 import { followUnfollow } from "../controllers/followers.controller.js";
+import { allPosts } from "../controllers/post.controller.js";
 const userRoute = Router()
 
 userRoute.route("/register").post(registerUser)
@@ -33,8 +36,13 @@ userRoute.route("/update-profile").post(jwtVerification,
     ]),updateProfile)
 userRoute.route("/delete-profilephoto").post(jwtVerification,deleteProfilePhoto)
 userRoute.route("/delete-cover").post(jwtVerification,deleteCover)
-userRoute.route("/current-user").post(jwtVerification,currentUser)
-
+userRoute.route("/profile/you").post(jwtVerification,currentUser)
+userRoute.route("/profile/:id").get(userInfo)
 //⁡⁢⁢⁢𝗙𝗼𝗹𝗹𝗼𝘄 𝗨𝗻𝗳𝗼𝗹𝗹𝗼𝘄⁡
-userRoute.route("/:id").post(jwtVerification,followUnfollow);
+userRoute.route("/profile/:id/follow").post(jwtVerification,followUnfollow);
+
+//⁡⁢⁢⁢𝗛𝗼𝗺𝗲 𝗣𝗮𝗴𝗲⁡
+userRoute.route("/home").get(jwtVerification,allPosts)
+//⁡⁢⁢⁢𝗦𝗲𝗮𝗿𝗰𝗵 𝗨𝘀𝗲𝗿⁡
+userRoute.route("/search").post(searchUser)
 export { userRoute }; 

@@ -349,6 +349,43 @@ const currentUser = asyncHandler(async(req,res)=>{
   .status(200)
   .json(new apiResponse(200,req.user,"Current User fetched successfully"))
 })
+
+//Get User Info
+const userInfo = asyncHandler(async(req,res)=>{
+  const user = await User.findById(req.params.id).select("-pasword -refreshToken")
+
+  if(!user){
+    throw new apiError(400, "User Does not exist")
+  }
+  return res
+  .status(200)
+  .json(new apiResponse(200,user,"User fetched successfully"))
+})
+
+//⁡⁢⁢⁢𝗦𝗲𝗮𝗿𝗰𝗵 𝗨𝘀𝗲𝗿⁡
+const searchUser = asyncHandler(async(req,res)=>{
+  const {search} = req.body
+  if(!search||search.trim()===""){
+    throw new apiError(400,"You havent searched anything")
+  }
+
+  const regex = new RegExp(search,"i")// i, for case insensitive
+
+  const user = await User.find({
+    $or:[
+      {username:{$regex:regex}},
+      {fullName:{$regex:regex}}
+    ]
+  }).select("username fullName profilePhoto")
+
+  if(!user || user.length === 0){
+    throw new apiError(400,"No user found")
+  }
+
+  return res
+  .status(200)
+  .json(new apiResponse(200,user,"Users fetched successfully"))
+})
 export {
   registerUser,
   loginUser,
@@ -359,4 +396,6 @@ export {
   deleteProfilePhoto,
   deleteCover,
   currentUser,
+  userInfo,
+  searchUser
 };
