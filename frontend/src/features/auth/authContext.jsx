@@ -57,6 +57,13 @@ export const AuthProvider = ({children})=>{
             return { success: false, message: error.response?.data?.message || error.message }
         }
     }
+    const findUser = async(userId)=>{
+        try {
+            await axios.post(`/user/${userId}`)
+        } catch (error) {
+            return { success: false, message: error.response?.data?.message || error.message }
+        }
+    }
     useEffect(() => {
         const initAuth = async () => {
           try {
@@ -73,7 +80,7 @@ export const AuthProvider = ({children})=>{
         initAuth();
       }, []);
     return (
-        <AuthContext.Provider value={{user,loading,isAuthenticated,register,login,fetchUser,logout,updateToken}}>
+        <AuthContext.Provider value={{user,loading,isAuthenticated,register,login,fetchUser,logout,updateToken,findUser}}>
             {children}
         </AuthContext.Provider>
     )

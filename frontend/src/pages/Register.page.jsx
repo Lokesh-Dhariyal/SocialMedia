@@ -1,4 +1,4 @@
-import {Register} from "../features/auth/register.jsx"
+import {Register} from "../features/user/register.jsx"
 
 export const UserRegister = ()=>{
 

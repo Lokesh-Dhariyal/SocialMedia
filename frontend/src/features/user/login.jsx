@@ -5,7 +5,7 @@ import { SubmitButton } from "../../components/buttons/SubmitButton";
 
 const Login = ()=>{
     const navigate = useNavigate()
-    const {login,updateToken} = userAuth()
+    const {login} = userAuth()
     const [formData,setFormData] = useState({
         credentials:"",
         password:""
@@ -33,8 +33,8 @@ const Login = ()=>{
     const [isPasswordHidden, setPasswordHidden] = useState(true)
     return (
         <>
-            <div className="border border-gray-600 bg-gray-900 w-4/10 my-25 mx-auto h-110 rounded-3xl">
-                <div className="text-5xl w-11/12 mx-auto mt-15 mb-10 text-white">Login</div>
+            <div className="border border-[#1f1f1f] bg-[#141414] w-4/10 mt-40 mx-auto h-120 rounded-3xl">
+                <div className="text-5xl w-11/12 mx-auto mt-20 mb-10 text-white">Login</div>
                     <div className="w-11/12 mx-auto mt-5 ">
                         <form onSubmit={handleSubmit}>
 
@@ -86,9 +86,14 @@ const Login = ()=>{
                             />
                         </div>
         
-                            <SubmitButton type="submit" className=" w-50 h-12">
+                            <SubmitButton type="submit" className="font-bold">
                                 Login
                             </SubmitButton>
+
+                        <div className="text-white my-3 text-lg opacity-60">
+                            Dont't have an accout? 
+                            <a href="/register" className="mx-1 text-blue-500 hover:text-blue-400">Sign up</a>
+                        </div>
                         </form>
                 </div>
             </div>

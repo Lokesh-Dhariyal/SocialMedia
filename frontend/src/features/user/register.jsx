@@ -35,8 +35,8 @@ const Register = ()=>{
     const [isPasswordHidden, setPasswordHidden] = useState(true)
     return (
     <>
-        <div className="border border-gray-600 bg-gray-900 w-4/10 my-15 mx-auto h-150 rounded-3xl">
-            <div className="text-5xl w-11/12 mx-auto mt-15 mb-10 text-white">Register</div>
+        <div className="border border-[#1f1f1f] bg-[#141414] w-4/10 mt-30 mx-auto h-150 rounded-3xl">
+            <div className="text-5xl w-11/12 mx-auto mt-15 mb-10 text-white">Sign Up</div>
             <div className="w-11/12 mx-auto mt-5 ">
                 <form onSubmit={handleSubmit}>
 
@@ -120,9 +120,14 @@ const Register = ()=>{
                     </div>
                     </div >
 
-                    <SubmitButton type="submit" className="w-50 h-12">
+                    <SubmitButton type="submit" className='font-bold'>
                         Register
                     </SubmitButton>
+
+                    <div className="text-white my-3 text-lg opacity-60">
+                        Already have an accout? 
+                        <a href="/login" className="mx-1 text-blue-500 hover:text-blue-400">Login</a>
+                    </div>
                 </form>
             </div>
         </div>

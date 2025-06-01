@@ -1,4 +1,22 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+
+@theme {
+  --font-commissioner: "Commissioner", sans-serif;
+
+  --font-Roboto: "Roboto Flex", sans-serif;
+}
+.font-commissioner {
+  font-family: var(--font-commissioner);
+}
+.font-Roboto {
+  font-family: var(--font-Roboto);
+}
+
+body{
+  background-color: black;
+}
 
 .sticky-nav {
     animation: sticky-nav 300ms;
@@ -11,4 +29,224 @@
     100% {
         transform: translateY(0)
     }
+}
+
+.button1 {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #bdbcbc;
+    border: none;
+    color: #1d1d1d;
+    text-align: center;
+    font-size: 17px;
+    padding: 12px;
+    transition: all 0.5s;
+    cursor: pointer;
+   }
+   
+   .button1 span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+   }
+   
+   .button1 span:after {
+    content: '»';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -15px;
+    transition: 0.5s;
+   }
+   
+   .button1:hover span {
+    padding-right: 15px;
+   }
+   
+   .button1:hover span:after {
+    opacity: 1;
+    right: 0;
+   }
+
+
+/* Loading screen  */
+/* From Uiverse.io by david-mohseni */ 
+.loader {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    border-radius: 10px;
+  }
+  
+  .loader div {
+    width: 8%;
+    height: 24%;
+    background: rgb(128, 128, 128);
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    opacity: 0;
+    border-radius: 50px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    animation: fade458 1s linear infinite;
+  }
+  
+  @keyframes fade458 {
+    from {
+      opacity: 1;
+    }
+  
+    to {
+      opacity: 0.25;
+    }
+  }
+  
+  .loader .bar1 {
+    transform: rotate(0deg) translate(0, -130%);
+    animation-delay: 0s;
+  }
+  
+  .loader .bar2 {
+    transform: rotate(30deg) translate(0, -130%);
+    animation-delay: -1.1s;
+  }
+  
+  .loader .bar3 {
+    transform: rotate(60deg) translate(0, -130%);
+    animation-delay: -1s;
+  }
+  
+  .loader .bar4 {
+    transform: rotate(90deg) translate(0, -130%);
+    animation-delay: -0.9s;
+  }
+  
+  .loader .bar5 {
+    transform: rotate(120deg) translate(0, -130%);
+    animation-delay: -0.8s;
+  }
+  
+  .loader .bar6 {
+    transform: rotate(150deg) translate(0, -130%);
+    animation-delay: -0.7s;
+  }
+  
+  .loader .bar7 {
+    transform: rotate(180deg) translate(0, -130%);
+    animation-delay: -0.6s;
+  }
+  
+  .loader .bar8 {
+    transform: rotate(210deg) translate(0, -130%);
+    animation-delay: -0.5s;
+  }
+  
+  .loader .bar9 {
+    transform: rotate(240deg) translate(0, -130%);
+    animation-delay: -0.4s;
+  }
+  
+  .loader .bar10 {
+    transform: rotate(270deg) translate(0, -130%);
+    animation-delay: -0.3s;
+  }
+  
+  .loader .bar11 {
+    transform: rotate(300deg) translate(0, -130%);
+    animation-delay: -0.2s;
+  }
+  
+  .loader .bar12 {
+    transform: rotate(330deg) translate(0, -130%);
+    animation-delay: -0.1s;
+  }
+  
+
+/* Like Button  */
+/* From Uiverse.io by catraco */ 
+.heart-container {
+  --heart-color: rgb(255, 91, 137);
+  position: relative;
+  width: 50px;
+  height: 50px;
+  transition: .3s;
+}
+
+.heart-container .checkbox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 20;
+  cursor: pointer;
+}
+
+.heart-container .svg-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heart-container .svg-outline,
+        .heart-container .svg-filled {
+  fill: var(--heart-color);
+  position: absolute;
+}
+
+.heart-container .svg-filled {
+  animation: keyframes-svg-filled 1s;
+  display: none;
+}
+
+.heart-container .svg-celebrate {
+  position: absolute;
+  animation: keyframes-svg-celebrate .5s;
+  animation-fill-mode: forwards;
+  display: none;
+  stroke: var(--heart-color);
+  fill: var(--heart-color);
+  stroke-width: 2px;
+}
+
+.heart-container .checkbox:checked~.svg-container .svg-filled {
+  display: block
+}
+
+.heart-container .checkbox:checked~.svg-container .svg-celebrate {
+  display: block
+}
+
+@keyframes keyframes-svg-filled {
+  0% {
+    transform: scale(0);
+  }
+
+  25% {
+    transform: scale(1.2);
+  }
+
+  50% {
+    transform: scale(1);
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes keyframes-svg-celebrate {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+    display: none;
+  }
 }

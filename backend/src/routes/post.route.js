@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { upload } from "../middlewares/multer.middleware.js";
-import { createPost,updatePost,deletePost } from "../controllers/post.controller.js";
+import { createPost,updatePost,deletePost,getPost } from "../controllers/post.controller.js";
 import { jwtVerification } from "../middlewares/auth.middleware.js";
 import { likeUnlikePost } from "../controllers/like.controller.js";
 import { deleteComment, updateComment, writeComment } from "../controllers/comment.controller.js";
@@ -22,4 +22,5 @@ postRoute.route("/:id/comment").post(jwtVerification,writeComment);
 postRoute.route("/:postId/update-comment/:commentId").post(jwtVerification,updateComment);
 postRoute.route("/:postId/delete-comment/:commentId").post(jwtVerification,deleteComment);
 
+postRoute.route("/:id").get(getPost)
 export {postRoute}

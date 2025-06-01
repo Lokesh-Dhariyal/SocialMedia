@@ -393,7 +393,7 @@ const searchUser = asyncHandler(async(req,res)=>{
       {username:{$regex:regex}},
       {fullName:{$regex:regex}}
     ]
-  }).select("username fullName profilePhoto")
+  }).select("_id username fullName profilePhoto")
 
   if(!user || user.length === 0){
     throw new apiError(400,"No user found")

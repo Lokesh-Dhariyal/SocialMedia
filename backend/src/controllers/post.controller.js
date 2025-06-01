@@ -148,4 +148,18 @@ const allPosts = asyncHandler(async(req,res)=>{
   );
 })
 
-export {createPost,updatePost,deletePost,allPosts}
+//Get Post
+
+const getPost = asyncHandler(async(req,res)=>{
+  const postId = req.params.id
+
+  const postInfo = await Post.findById(postId)
+  if(!postInfo){
+    throw new apiError(400,"Post donot exist")
+  }
+  return res
+  .status(200)
+  .json(new apiResponse(200,postInfo,"Post fetched Successfully"))
+})
+
+export {createPost,updatePost,deletePost,allPosts,getPost}

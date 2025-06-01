@@ -6,9 +6,9 @@ function App() {
 
   return (
     <>
-      <div className='w-full block bg-gray-800 h-dvh'>
+      <div className='w-full block font-Roboto'>
         <Header/>
-        <main>
+        <main className='mt-15'>
           <Outlet/>
         </main>
       </div>
