@@ -21,7 +21,7 @@ const userRoute = Router()
 userRoute.route("/register").post(registerUser)
 userRoute.route("/login").post(loginUser)
 userRoute.route("/logout").post(jwtVerification,logoutUser)
-userRoute.route("/update-token").post(updateToken)
+userRoute.route("/update-token").post(updateToken);
 userRoute.route("/change-password").post(jwtVerification,changePassword)
 userRoute.route("/update-profile").post(jwtVerification,
   upload.fields([
@@ -36,7 +36,7 @@ userRoute.route("/update-profile").post(jwtVerification,
     ]),updateProfile)
 userRoute.route("/delete-profilephoto").post(jwtVerification,deleteProfilePhoto)
 userRoute.route("/delete-cover").post(jwtVerification,deleteCover)
-userRoute.route("/profile/you").post(jwtVerification,currentUser)
+userRoute.route("/me").get(jwtVerification, currentUser);
 userRoute.route("/profile/:id").get(userInfo)
 //⁡⁢⁢⁢𝗙𝗼𝗹𝗹𝗼𝘄 𝗨𝗻𝗳𝗼𝗹𝗹𝗼𝘄⁡
 userRoute.route("/profile/:id/follow").post(jwtVerification,followUnfollow);

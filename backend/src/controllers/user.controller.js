@@ -28,7 +28,7 @@ const generateAccessAndRefreshTokens = async (userId)=>{
 const options = {
   // to make it more secure
   httpOnly: true,
-  secure: true,
+  secure: false,
 };
 
 //⁡⁣⁣⁢⁡⁢⁢⁢𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗨𝘀𝗲𝗿⁡(avatar will be added in the update user section as it is not needed while registration)
@@ -77,6 +77,11 @@ const registerUser = asyncHandler(async(req,res)=>{
     cover:""
   });
 
+
+  const { refreshToken, accessToken } = await generateAccessAndRefreshTokens(
+    user._id,
+    user.username
+  );
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
@@ -91,10 +96,12 @@ const registerUser = asyncHandler(async(req,res)=>{
 
   return res
     .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json(
       new apiResponse(
         200,
-        createdUser /*object*/,
+        {user: createdUser,accessToken,refreshToken},
         "User registered Successfully"
       )
     );
@@ -165,7 +172,7 @@ const logoutUser = asyncHandler(async (req,res)=>{
 
 //⁡⁢⁢⁢𝗨𝗽𝗱𝗮𝘁𝗲 𝗧𝗼𝗸𝗲𝗻𝘀 𝗪𝗵𝗲𝗻 𝗼𝗽𝗲𝗻𝗶𝗻𝗴 𝘁𝗵𝗲 𝗮𝗽𝗽⁡
 const updateToken = asyncHandler(async(req,res)=>{
-  const incomingRefreshToken = req.cookie.refreshToken || req.body.refreshToken
+  const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
   if(!incomingRefreshToken){
     throw new apiError(400,"Invalid loggin attempt")
@@ -178,18 +185,28 @@ const updateToken = asyncHandler(async(req,res)=>{
     if(!user){
       throw new apiError(400,"Invalid Token")
     }
-  
     if(incomingRefreshToken!=user.refreshToken){
       throw new apiError(400,"Refresh Token has been expired")
     }
   
-    const{updatedAccessToken,updatedRefreshToken} = generateAccessAndRefreshTokens(user._id)
-  
+    const { refreshToken, accessToken } = await generateAccessAndRefreshTokens(
+      user._id,
+      user.username
+    );
     return res
-    .status(200)
-    .cookie("accessToken",updatedAccessToken,options)
-    .cookie("refreshToken",updatedRefreshToken,options)
-    .json(new apiResponse(200,{refreshToken:updatedRefreshToken,accessToken:updatedAccessToken},"Token is refreshed and updated"))
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json(
+        new apiResponse(
+          200,
+          {
+            refreshToken: refreshToken,
+            accessToken: accessToken,
+          },
+          "Token is refreshed and updated"
+        )
+      );
   } catch (error) {
     throw new apiError(400,"Something went wrong while updating tokens")
   }
@@ -350,7 +367,7 @@ const currentUser = asyncHandler(async(req,res)=>{
   .json(new apiResponse(200,req.user,"Current User fetched successfully"))
 })
 
-//Get User Info
+//⁡⁢⁢⁢𝗚𝗲𝘁 𝗨𝘀𝗲𝗿 𝗜𝗻𝗳𝗼⁡
 const userInfo = asyncHandler(async(req,res)=>{
   const user = await User.findById(req.params.id).select("-pasword -refreshToken")
 
