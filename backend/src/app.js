@@ -7,7 +7,7 @@ const limit = "16kb"
 
 app.use(
   cors({
-    origin: "https://staticgram.vercel.app",
+    origin: process.env.ORIGIN,
     credentials: true,
   })
 );
