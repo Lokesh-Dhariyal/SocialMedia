@@ -13,8 +13,8 @@ const generateAccessAndRefreshTokens = async (userId)=>{
     if(!user){
       throw new apiError(400,"User not found")
     }
-    const accessToken =await generateAccessToken(userId);
-    const refreshToken =await generateRefreshToken(userId);
+    const accessToken = generateAccessToken({ _id: user._id, username: user.username });
+    const refreshToken = generateRefreshToken({ _id: user._id, username: user.username });  
 
     user.refreshToken = refreshToken
     await user.save({validateBeforeSave:false})

@@ -16,35 +16,16 @@ const isPasswordCorrect = async (password,userPassword)=>{
 }
 
 //Generating Access token
-const generateAccessToken =async(userId)=>{
-  const user = await User.findById(userId)
-  if (!user) throw new Error("User not found");
-    return jwt.sign(
-      {
-        _id: user._id,
-        username: user.username,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRE,
-      }
-    );
-}
+const generateAccessToken = (payload) => {
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: process.env.ACCESS_TOKEN_EXPIRE,
+  });
+};
 
-//Generating Refresh Token
-const generateRefreshToken = async (userId) => {
-  const user = await User.findById(userId);
-  if (!user) throw new Error("User not found");
-  return jwt.sign(
-    {
-      _id: user._id,
-      username: user.username,
-    },
-    process.env.REFRESH_TOKEN_SECRET,
-    {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRE,
-    }
-  );
+const generateRefreshToken = (payload) => {
+  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRE,
+  });
 };
 
 export {hashingPassword,isPasswordCorrect,generateAccessToken,generateRefreshToken}
