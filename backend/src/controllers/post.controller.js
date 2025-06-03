@@ -10,6 +10,7 @@ const createPost = asyncHandler(async(req,res)=>{
     const {description} = req.body
     const userId = req.user._id
 
+
     let postLocalPath;
     if (
       req.files &&
@@ -30,7 +31,7 @@ const createPost = asyncHandler(async(req,res)=>{
     const post = await Post.create({
       content: postContent?.url,
       description: description || "",
-      owner: userId,
+      owner: userId
     });
     if(!post){
         throw new apiError(400,"Something went wrong while creating post")
@@ -162,4 +163,13 @@ const getPost = asyncHandler(async(req,res)=>{
   .json(new apiResponse(200,postInfo,"Post fetched Successfully"))
 })
 
-export {createPost,updatePost,deletePost,allPosts,getPost}
+
+
+export {
+  createPost,
+  updatePost,
+  deletePost,
+  allPosts,
+  getPost,
+  
+};

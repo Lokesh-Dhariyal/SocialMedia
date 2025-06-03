@@ -1,18 +1,17 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import './App.css'
-import {Header} from "./components/header/Header"
+import { Header } from './components/header/Header'
 
 function App() {
 
   return (
-    <>
-      <div className='w-full block font-Roboto'>
-        <Header/>
-        <main className='mt-15'>
-          <Outlet/>
-        </main>
-      </div>
-    </>
+    <div className="w-full block font-Roboto">
+      <Header />
+      <AnimatePresence mode="wait">
+          <Outlet />
+      </AnimatePresence>
+    </div>
   )
 }
 

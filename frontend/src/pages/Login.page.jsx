@@ -1,7 +1,7 @@
 import React from 'react'
 import { Login } from '../features/user/login'
 
-function UserLogin() {
+function UserLoginPage() {
   return (
       <div>
         <Login/>
@@ -9,4 +9,4 @@ function UserLogin() {
   )
 }
 
-export {UserLogin}
+export {UserLoginPage}

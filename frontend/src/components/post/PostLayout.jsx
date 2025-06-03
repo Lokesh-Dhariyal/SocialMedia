@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { LikeButton } from "../buttons/LikeButton"
-import { SubmitButton } from "../buttons/SubmitButton"
 import {postAuth} from "../../hooks/postAuth"
 import { userAuth } from "../../hooks/userAuth"
-export function PostLayout({username,postId,likedBy,content,description,likesCount,commentCount,createdAt}) {
+import { PostSetting } from "../buttons/PostSetting"
+import { motion } from 'framer-motion'
+
+
+export function PostLayout({username,postId,likedBy,content,description,likesCount,commentCount,createdAt,setting,userId,profilePhoto}) {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString)
@@ -25,7 +28,6 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
     const toggleLike = async () => {
         try {
           const response = await likePost(postId);
-          console.log(response)
           setIsLiked(response.data.liked);
           setLikes(response.data.likeCount);
         } catch (error) {
@@ -47,16 +49,27 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
     }
 
   return (
-    <div className=" w-11/17 mx-auto h-fit p-2 my-5 text-white">
-        <div className=" h-10  p-1 text-lg flex">
-            <div className="">{username}</div>
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="your-styles"
+    >
+    <div className="w-full lg:w-11/17 mx-auto h-fit p-2 lg:my-5 text-white">
+        <div className="p-1 text-lg flex gap-2 lg:gap-3">
+        <div className='w-12 h-12'>
+          <a href={`/profile/${userId}`}><img src={profilePhoto} alt="img" className='rounded-full w-full h-11 lg:h-full' /></a>
+          </div>
+            <div className="pt-3 w-5/8 lg:w-5/6 font-bold"><a href={`/profile/${userId}`}>{username}</a></div>
+
+            <div hidden={!setting} className="pt-1"><PostSetting postId={postId}/></div>
         </div>
 
-        <div className="border border-white/30 h-120">
+        <div className="border border-white/30 h-fit w-fit">
             <img src={content} alt="" className="w-full h-full" />
         </div>
 
-        <div className="mt-2 text-sm">{formatDate(createdAt)}</div>
+        <div className="mt-2 text-xs lg:text-sm">{formatDate(createdAt)}</div>
 
         <div className=" h-fit mt-2">{description}</div>
 
@@ -64,7 +77,7 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
             <LikeButton postId={postId} isLiked={isLiked} onLikeChange={toggleLike}/>
             <div className="pt-3">{likes}</div>
 
-            <button onClick={toggleComment} className="h-8 mx-3 mt-1">
+            <button onClick={toggleComment} className="h-8 mx-3 mt-1 hover:cursor-pointer">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-9 text-white/60 hover:text-white/90"
@@ -96,5 +109,6 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
             </button>
         </form>
     </div>
+    </motion.div>
   )
 }

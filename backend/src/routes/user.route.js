@@ -6,12 +6,13 @@ import {
   logoutUser,
   updateToken,
   changePassword,
-  updateProfile,
+  updateProfilePhoto,
+  updateUserInfo,
   deleteProfilePhoto,
-  deleteCover,
   currentUser,
   userInfo,
   searchUser,
+  getPostsByUser,
 } from "../controllers/user.controller.js";
 import {jwtVerification} from "../middlewares/auth.middleware.js"
 import { followUnfollow } from "../controllers/followers.controller.js";
@@ -23,19 +24,18 @@ userRoute.route("/login").post(loginUser)
 userRoute.route("/logout").post(jwtVerification,logoutUser)
 userRoute.route("/update-token").post(updateToken);
 userRoute.route("/change-password").post(jwtVerification,changePassword)
-userRoute.route("/update-profile").post(jwtVerification,
+userRoute.route("/update-profilephoto").post(
+  jwtVerification,
   upload.fields([
-      {
-        name: "profilePhoto",
-        maxCount: 1,
-      },
-      {
-        name: "cover",
-        maxCount: 1,
-      }
-    ]),updateProfile)
+    {
+      name: "profilePhoto",
+      maxCount: 1,
+    },
+  ]),
+  updateProfilePhoto
+);
+userRoute.route("/update-userinfo").post(jwtVerification, updateUserInfo);
 userRoute.route("/delete-profilephoto").post(jwtVerification,deleteProfilePhoto)
-userRoute.route("/delete-cover").post(jwtVerification,deleteCover)
 userRoute.route("/me").get(jwtVerification, currentUser);
 userRoute.route("/profile/:id").get(userInfo)
 //⁡⁢⁢⁢𝗙𝗼𝗹𝗹𝗼𝘄 𝗨𝗻𝗳𝗼𝗹𝗹𝗼𝘄⁡
@@ -45,4 +45,6 @@ userRoute.route("/profile/:id/follow").post(jwtVerification,followUnfollow);
 userRoute.route("/home").get(jwtVerification,allPosts)
 //⁡⁢⁢⁢𝗦𝗲𝗮𝗿𝗰𝗵 𝗨𝘀𝗲𝗿⁡
 userRoute.route("/search").post(searchUser)
+//User post
+userRoute.route("/:id/posts").get(getPostsByUser)
 export { userRoute }; 

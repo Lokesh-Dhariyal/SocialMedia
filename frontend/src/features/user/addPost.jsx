@@ -1,11 +1,17 @@
 import { useNavigate } from "react-router-dom"
 import {postAuth} from "../../hooks/postAuth"
 import { useState,useRef} from "react"
+import { userAuth } from "../../hooks/userAuth"
+import { LoadingPage } from "../../pages/Loading.page"
+import { motion } from 'framer-motion'
+
 
 export function AddPost() {
+    
+    const {loading} = userAuth()
 
     const navigate = useNavigate()
-
+    
     const {uploadPost} = postAuth()
     const [description,setDescription] = useState("")
     const [file, setFile] = useState(null)
@@ -13,7 +19,7 @@ export function AddPost() {
     const [isUploading,setIsUploading] = useState(false)
 
     const fileInputRef = useRef(null)
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsUploading(true)
@@ -28,12 +34,22 @@ export function AddPost() {
             fileInputRef.current.value = ""
         }
         setIsUploading(false)
-      }
-
+        navigate("/me", { replace: true })
+    }
+    
+    if (loading) {
+        return <LoadingPage/>
+    }
   return (
-    <div className="border-b border-white/30 w-4/6 mx-auto mt-70 pl-5 pb-5">
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="your-styles"
+                >
+    <div className="lg:border-b border-white/30 lg:w-4/6 mx-auto mt-40 lg:mt-70 pl-5 pb-5">
         
-            <div className="text-3xl font-bold text-white h-15 w-1/2 ">
+            <div className="text-xl lg:text-3xl font-bold text-white h-15 lg:w-1/2 ">
                 Upload your file And description
             </div>
 
@@ -57,7 +73,7 @@ export function AddPost() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="write post description"
-                className="w-full my-5 h-10 pr-3 pl-3 py-2 text-gray-500 text-xl border focus:border-gray-100 shadow-sm rounded-lg"
+                className="w-150 my-5 h-10 pr-3 pl-3 py-2 text-gray-500 text-xl border focus:border-gray-100 shadow-sm rounded-lg"
             />
             <button
             type="submit"
@@ -68,5 +84,6 @@ export function AddPost() {
             </div>
         </form>
     </div>
+    </motion.div>
   )
 }

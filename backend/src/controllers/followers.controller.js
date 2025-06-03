@@ -38,9 +38,11 @@ const followUnfollow = asyncHandler(async (req, res) => {
       { new: true }
     );
 
+    const newtoUser = await User.findById(toUser._id)
+
     return res
       .status(200)
-      .json(new apiResponse(200, { following: true, UserId:updatedUser._id, FollowedTo:toUser._id},"You Followed"));
+      .json(new apiResponse(200, { following: true, UserId:updatedUser._id, FollowedTo:toUser._id, followers:newtoUser.followerCount},"You Followed"));
   }
   if (alreadyFollowed) {
     await Follower.deleteOne({ user: fromUser._id, followedTo: toUser._id });
@@ -58,10 +60,11 @@ const followUnfollow = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
+    const newtoUser = await User.findById(toUser._id);
 
     return res
       .status(200)
-      .json(new apiResponse(200, { following: false, UserId:updatedUser._id, FollowedTo:toUser._id },"You Unfollowed")
+      .json(new apiResponse(200, { following: false, UserId:updatedUser._id, FollowedTo:toUser._id,followers:newtoUser.followerCount },"You Unfollowed")
       );
   }
 });

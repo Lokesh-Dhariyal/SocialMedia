@@ -1,7 +1,8 @@
 import { userAuth } from "../../hooks/userAuth";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubmitButton } from "../../components/buttons/SubmitButton";
+import { motion } from 'framer-motion'
 
 const Login = ()=>{
     const navigate = useNavigate()
@@ -11,7 +12,6 @@ const Login = ()=>{
         password:""
     })
 
-    
 
     const handleChange = (e)=>{
         setFormData({...formData,[e.target.name]:e.target.value})
@@ -33,13 +33,19 @@ const Login = ()=>{
     const [isPasswordHidden, setPasswordHidden] = useState(true)
     return (
         <>
-            <div className="border border-[#1f1f1f] bg-[#141414] w-4/10 mt-40 mx-auto h-120 rounded-3xl">
-                <div className="text-5xl w-11/12 mx-auto mt-20 mb-10 text-white">Login</div>
+        <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="your-styles"
+      >
+            <div className="border border-[#1f1f1f] bg-[#141414] w-22/23 lg:w-4/10 mt-40 lg:mt-40 mx-auto h-120 rounded-2xl lg:rounded-3xl">
+                <div className="text-5xl w-11/12 mx-auto mt-10 lg:mt-20 mb-10 text-white">Login</div>
                     <div className="w-11/12 mx-auto mt-5 ">
                         <form onSubmit={handleSubmit}>
 
 
-                        <div className="relative w-4/5 my-6">
+                        <div className="relative lg:w-4/5 my-10 lg:my-6">
                             <svg
                                 className="w-6 h-6 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +65,7 @@ const Login = ()=>{
                             />
                         </div>
         
-                        <div className="relative w-4/5 my-6">
+                        <div className="relative lg:w-4/5 my-10 lg:my-6">
                             <button type="button" className="text-gray-400 absolute right-3 inset-y-0 my-auto active:text-gray-600"
                                 onClick={() => setPasswordHidden(!isPasswordHidden)}
                             >
@@ -97,6 +103,7 @@ const Login = ()=>{
                         </form>
                 </div>
             </div>
+            </motion.div>
         </>
     )
 

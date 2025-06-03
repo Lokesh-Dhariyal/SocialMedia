@@ -1,6 +1,9 @@
+import { motion } from 'framer-motion'
+
 export  function LoadingPage() {
   return (
-    <div className="loader mx-auto mt-75">
+ 
+    <div className="loader mx-auto mt-85 h-20 w-20">
         <div className="bar1"></div>
         <div className="bar2"></div>
         <div className="bar3"></div>

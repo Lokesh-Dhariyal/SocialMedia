@@ -1,6 +1,6 @@
 import {Register} from "../features/user/register.jsx"
 
-export const UserRegister = ()=>{
+export const UserRegisterPage = ()=>{
 
     return (
         <>

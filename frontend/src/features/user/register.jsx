@@ -2,6 +2,8 @@ import { userAuth } from "../../hooks/userAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SubmitButton } from "../../components/buttons/SubmitButton";
+import { motion } from 'framer-motion'
+
 const Register = ()=>{
     const {register} = userAuth()
     const navigate = useNavigate()
@@ -35,12 +37,18 @@ const Register = ()=>{
     const [isPasswordHidden, setPasswordHidden] = useState(true)
     return (
     <>
-        <div className="border border-[#1f1f1f] bg-[#141414] w-4/10 mt-30 mx-auto h-150 rounded-3xl">
+    <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="your-styles"
+      >
+        <div className="border border-[#1f1f1f] bg-[#141414] w-22/23 lg:w-4/10 mt-30 mx-auto h-160 lg:h-150 rounded-3xl">
             <div className="text-5xl w-11/12 mx-auto mt-15 mb-10 text-white">Sign Up</div>
             <div className="w-11/12 mx-auto mt-5 ">
                 <form onSubmit={handleSubmit}>
 
-                <div className="relative w-4/5 my-6">
+                <div className="relative lg:w-4/5  my-10 lg:my-6">
                     <svg
                         className="w-6 h-6 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
                         xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +70,7 @@ const Register = ()=>{
 
 
 
-                <div className="relative w-4/5 my-6">
+                <div className="relative lg:w-4/5  my-10 lg:my-6">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xl text-gray-400">@</span>
                     <input
                         type="text"
@@ -75,7 +83,7 @@ const Register = ()=>{
                     
 
 
-                    <div className="relative w-4/5 my-6">
+                    <div className="relative lg:w-4/5 my-10 lg:my-6">
                         <svg className="w-6 h-6 text-gray-400 absolute left-3 inset-y-0 my-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                     </svg>
@@ -92,7 +100,7 @@ const Register = ()=>{
 
 
                     <div>
-                        <div className="relative w-4/5 my-6">
+                        <div className="relative lg:w-4/5 my-10 lg:my-6">
                         <button type="button" className="text-gray-400 absolute right-3 inset-y-0 my-auto active:text-gray-600"
                             onClick={() => setPasswordHidden(!isPasswordHidden)}
                         >
@@ -131,6 +139,7 @@ const Register = ()=>{
                 </form>
             </div>
         </div>
+        </motion.div>
     </>
 )
 };

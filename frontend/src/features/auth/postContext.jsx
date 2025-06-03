@@ -41,8 +41,17 @@ export const PostProvider = ({children})=>{
         }
     }
 
+    const deletePost = async(postId)=>{
+        try {
+            const res = await axios.post(`/post/delete-post/${postId}`)
+            return res.data
+        } catch (error) {
+            console.error("Fetch user error:", error.response?.data || error.message);
+        }
+    }
+
     return (
-        <PostContext.Provider value={{commentOnPost, fetchPost, likePost,uploadPost}}>
+        <PostContext.Provider value={{commentOnPost, fetchPost, likePost,uploadPost,deletePost}}>
             {children}
         </PostContext.Provider>
     )

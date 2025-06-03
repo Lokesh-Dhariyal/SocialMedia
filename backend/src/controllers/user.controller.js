@@ -5,7 +5,7 @@ import {asyncHandler} from '../utils/asyncHandler.util.js'
 import { uploadToCloudinary, deleteFromCloudinary } from "../utils/cloudinary.util.js";
 import {User} from "../models/user.model.js"
 import jwt from "jsonwebtoken"
-
+import { Post } from "../models/post.model.js";
 
 const generateAccessAndRefreshTokens = async (userId)=>{
   try {
@@ -74,7 +74,6 @@ const registerUser = asyncHandler(async(req,res)=>{
     email: email.toLowerCase(),
     password: hashedPassword,
     profilePhoto:"https://res.cloudinary.com/dhzxvjygz/image/upload/v1748512530/userImage_abfe44.png",
-    cover:""
   });
 
 
@@ -242,8 +241,8 @@ const changePassword = asyncHandler(async(req,res)=>{
 })
 
 //⁡⁢⁢⁢𝗨𝗽𝗱𝗮𝘁𝗲 𝗣𝗿𝗼𝗳𝗶𝗹𝗲⁡
-const updateProfile = asyncHandler(async(req,res)=>{
-  const { fullName, email, bio } = req.body
+const updateUserInfo = asyncHandler(async(req,res)=>{
+  const { fullName, email, bio } = req.body;
   //front end will handle that these field will be filled with the already exited ones, still
   if (
     ![fullName, email].every(
@@ -253,6 +252,34 @@ const updateProfile = asyncHandler(async(req,res)=>{
     throw new apiError(400, "Full name and email are required.");
   }
 
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        fullName,
+        email,
+        bio: bio || "",
+      },
+    },
+    { new: true }
+  ).select("-password -refreshToken");
+
+  if (!user) {
+    throw new apiError(
+      400,
+      "Something went wrong while updating the user profile"
+    );
+  }
+
+  return res
+    .status(200)
+    .json(new apiResponse(200, {}, "User's Profile updated successfully"));
+
+})
+
+
+
+const updateProfilePhoto = asyncHandler(async(req,res)=>{
   let profilePhotoLocalPath;
   if (
     req.files &&
@@ -263,21 +290,8 @@ const updateProfile = asyncHandler(async(req,res)=>{
   }
   const profilePhoto = await uploadToCloudinary(profilePhotoLocalPath);
 
-  let coverLocalPath;
-  if (
-    req.files &&
-    Array.isArray(req.files.cover) &&
-    req.files.cover.length > 0
-  ) {
-    coverLocalPath = req.files.cover[0].path;
-  }
-    const cover = await uploadToCloudinary(coverLocalPath);
- 
   //delete previous profilephoto and cover
     const photoInfoUser = await User.findById(req.user._id)
-    if (photoInfoUser.cover !=="") {
-      deleteFromCloudinary(photoInfoUser.cover);
-    }
     if (photoInfoUser.profilePhoto !=="https://res.cloudinary.com/dhzxvjygz/image/upload/v1748512530/userImage_abfe44.png"){
       deleteFromCloudinary(photoInfoUser.profilePhoto); 
     }
@@ -287,24 +301,20 @@ const updateProfile = asyncHandler(async(req,res)=>{
     req.user._id,
     {
       $set: {
-        fullName,
-        email,
         profilePhoto:
           profilePhoto?.url ||"https://res.cloudinary.com/dhzxvjygz/image/upload/v1748512530/userImage_abfe44.png",
-        cover: cover?.url || "",
-        bio: bio || "",
       },
     },
     { new: true }
   ).select("-password -refreshToken");
 
   if(!user){
-    throw new apiError(400,"Something went wrong while updating the user profile")
+    throw new apiError(400,"Something went wrong while updating the user profilePhoto")
   }
     
     return res
     .status(200)
-    .json(new apiResponse(200,user,"User's Profile updated successfully"))
+    .json(new apiResponse(200,user,"User's ProfilePhoto updated successfully"))
 })
 
 //⁡⁢⁢⁢𝗗𝗲𝗹𝗲𝘁𝗲 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗣⁡⁢⁢⁢𝗵𝗼𝘁𝗼⁡
@@ -329,36 +339,6 @@ const deleteProfilePhoto = asyncHandler(async(req,res)=>{
   .json(new apiResponse(200,{},"Profile Photo deleted successfully"))
 })
 
-//⁡⁢⁢⁢𝗗𝗲𝗹𝗲𝘁𝗲 𝗰𝗼𝘃𝗲𝗿⁡
-const deleteCover = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user);
-  if(user.cover === ""){
-    throw new apiError(400,"There is nothing to delete")
-  }
-  const result = await deleteFromCloudinary(user.cover);
-
-  if (result.result === "not found") {
-    throw new apiError(400, "Image not found");
-  }
-  if (result.result !== "ok") {
-    throw new apiError(
-      400,
-      "Something went wrong while deleting profile picture"
-    );
-  }
-
-  await User.findByIdAndUpdate(user._id,
-    {
-      $set: {cover:""}
-    },
-    {
-      new:true,
-    }
-  )
-  return res
-    .status(200)
-    .json(new apiResponse(200, {}, "cover picture deleted successfully"));
-});
 
 //⁡⁢⁢⁢𝗖𝘂𝗿𝗿𝗲𝗻𝘁 𝗨𝘀𝗲𝗿 𝗶𝗻𝗳𝗼⁡
 const currentUser = asyncHandler(async(req,res)=>{
@@ -403,16 +383,32 @@ const searchUser = asyncHandler(async(req,res)=>{
   .status(200)
   .json(new apiResponse(200,user,"Users fetched successfully"))
 })
+
+//Get User Post
+const getPostsByUser = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+
+  const posts = await Post.find({ owner: userId }).sort({ createdAt: -1 });
+
+  if (!posts || posts.length === 0) {
+   throw new apiError(400,"No post found")
+  }
+
+  return res
+    .status(200)
+    .json(new apiResponse(200, posts, "Posts fetched successfully"));
+});
 export {
   registerUser,
   loginUser,
   logoutUser,
   updateToken,
   changePassword,
-  updateProfile,
+  updateProfilePhoto,
+  updateUserInfo,
   deleteProfilePhoto,
-  deleteCover,
   currentUser,
   userInfo,
-  searchUser
+  searchUser,
+  getPostsByUser,
 };

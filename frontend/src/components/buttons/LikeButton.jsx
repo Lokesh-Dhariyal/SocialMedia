@@ -19,7 +19,7 @@ export const LikeButton = ({ isLiked, onLikeChange }) => {
     <button
       onClick={handleClick}
       aria-label="Toggle Like"
-      className="focus:outline-none mt-1 mr-2"
+      className="focus:outline-none mt-1 mr-2 hover:cursor-pointer"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
