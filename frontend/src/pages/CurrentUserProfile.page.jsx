@@ -13,7 +13,7 @@ export function CurrentUserProfilePage() {
   
   useEffect(()=>{
     fetchUser()
-  },[])
+  },[user])
   
   useEffect(() => {
     const fetchAllPosts = async () => {

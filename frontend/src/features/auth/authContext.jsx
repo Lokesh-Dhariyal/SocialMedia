@@ -140,8 +140,8 @@ export const AuthProvider = ({children})=>{
     useEffect(() => {
         const initAuth = async () => {
           try {
-            await updateToken();
             await fetchUser();
+            await updateToken();
           } catch (err) {
             console.error("Auto-login failed:", err);
             setUser(null);
