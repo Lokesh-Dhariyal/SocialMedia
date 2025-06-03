@@ -39,3 +39,13 @@ app.use(express.json({ limit }));
 app.use(express.urlencoded({ extended: true, limit }));
 app.use(express.static("public"));
 app.use(cookieParser());
+
+import { userRoute } from "./routes/user.route.js";
+import { postRoute } from "./routes/post.route.js";
+
+app.use("/api/v1/user", userRoute);
+app.use("/api/v1/post", postRoute);
+
+import { errorMiddleware } from "./middlewares/error.middleware.js";
+app.use(errorMiddleware);
+export { app };
