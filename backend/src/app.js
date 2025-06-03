@@ -1,51 +1,28 @@
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+import express from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
-const app = express();
-const limit = "16kb";
-
-// ✅ Use this before any routes
-const allowedOrigins = ["https://staticgram.vercel.app"];
+const app = express()
+const limit = "16kb"
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        return callback(
-          new Error("CORS policy does not allow this origin"),
-          false
-        );
-      }
-      return callback(null, true);
-    },
+    origin: "https://staticgram.vercel.app",
     credentials: true,
   })
 );
 
-// ✅ Handle preflight requests (OPTIONS)
-app.options(
-  "*",
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
-
-// ✅ Body parsers
-app.use(express.json({ limit }));
-app.use(express.urlencoded({ extended: true, limit }));
+app.use(express.json({ limit: limit })); // this is used to set the amont of json accepted at a time
+app.use(express.urlencoded({ extended: true, limit: limit })); //this is for the encoded value in the url like %20 for space.
 app.use(express.static("public"));
 app.use(cookieParser());
 
 import { userRoute } from "./routes/user.route.js";
 import { postRoute } from "./routes/post.route.js";
 
-app.use("/api/v1/user", userRoute);
+app.use("/api/v1/user",userRoute)
 app.use("/api/v1/post", postRoute);
 
-import { errorMiddleware } from "./middlewares/error.middleware.js";
-app.use(errorMiddleware);
-export { app };
+import { errorMiddleware } from './middlewares/error.middleware.js'
+app.use(errorMiddleware)
+export {app}
