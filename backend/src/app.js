@@ -1,9 +1,9 @@
-import express from 'express'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
-const app = express()
-const limit = "16kb"
+const app = express();
+const limit = "16kb";
 
 app.use(
   cors({
@@ -20,9 +20,9 @@ app.use(cookieParser());
 import { userRoute } from "./routes/user.route.js";
 import { postRoute } from "./routes/post.route.js";
 
-app.use("/api/v1/user",userRoute)
+app.use("/api/v1/user", userRoute);
 app.use("/api/v1/post", postRoute);
 
-import { errorMiddleware } from './middlewares/error.middleware.js'
-app.use(errorMiddleware)
-export {app}
+import { errorMiddleware } from "./middlewares/error.middleware.js";
+app.use(errorMiddleware);
+export { app };

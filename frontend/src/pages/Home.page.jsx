@@ -2,10 +2,17 @@ import { useEffect, useState } from "react"
 import { userAuth } from "../hooks/userAuth"
 import { LoadingPage } from "./Loading.page"
 import { PostLayout } from "../components/post/PostLayout"
+import { NoPost } from "../components/post/noPost"
 
 function UserHomePage() {
-  const {user,loading,homePage} = userAuth()
+  const {user,loading,homePage,fetchUser,updateToken} = userAuth()
   const [allPosts,setAllPosts] = useState([])
+
+
+  useEffect(()=>{
+    fetchUser()
+    updateToken()
+  },[])
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -24,6 +31,10 @@ function UserHomePage() {
   
   if (loading || !user) {
     return <LoadingPage/>
+  }
+
+  if (user.followingCount === 0 && user.postCount === 0) {
+    return <NoPost/>
   }
   return (
     <div className="w-19/20 lg:w-11/16 mx-auto h-fit my-15">

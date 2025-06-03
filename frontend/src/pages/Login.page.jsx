@@ -1,7 +1,13 @@
-import React from 'react'
+import { userAuth } from '../hooks/userAuth'
 import { Login } from '../features/user/login'
+import { useEffect } from 'react'
 
 function UserLoginPage() {
+  const {fetchUser,updateToken} = userAuth()
+  useEffect(()=>{
+    fetchUser()
+    updateToken()
+  },[])
   return (
       <div>
         <Login/>

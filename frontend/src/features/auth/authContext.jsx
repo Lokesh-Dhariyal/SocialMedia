@@ -136,22 +136,6 @@ export const AuthProvider = ({children})=>{
         return { success: false, message: error.response?.data?.message || error.message };
       }
     }
-
-    useEffect(() => {
-        const initAuth = async () => {
-          try {
-            await fetchUser();
-            await updateToken();
-          } catch (err) {
-            console.error("Auto-login failed:", err);
-            setUser(null);
-          } finally {
-            setLoading(false);
-          }
-        };
-      
-        initAuth();
-      }, []);
     return (
         <AuthContext.Provider value={{user,loading,isAuthenticated,register,login,fetchUser,logout,updateToken,findUser,userPost,searchUser,followUser,homePage,updateProfilePhoto,deleteProfilePhoto,updateUserInfo,changePassword}}>
             {children}

@@ -28,6 +28,7 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
     const toggleLike = async () => {
         try {
           const response = await likePost(postId);
+          console.log(response)
           setIsLiked(response.data.liked);
           setLikes(response.data.likeCount);
         } catch (error) {
@@ -58,7 +59,7 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
     <div className="w-full lg:w-11/17 mx-auto h-fit p-2 lg:my-5 text-white">
         <div className="p-1 text-lg flex gap-2 lg:gap-3">
         <div className='w-12 h-12'>
-          <a href={`/profile/${userId}`}><img src={profilePhoto} alt="img" className='rounded-full w-full h-11 lg:h-full' /></a>
+          <a href={`/profile/${userId}`}><img src={profilePhoto} alt="img" className='rounded-full lg:w-full w-11 h-11 lg:h-full' /></a>
           </div>
             <div className="pt-3 w-5/8 lg:w-5/6 font-bold"><a href={`/profile/${userId}`}>{username}</a></div>
 

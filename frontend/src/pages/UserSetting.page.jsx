@@ -7,7 +7,11 @@ import { motion } from 'framer-motion'
 
 export function UserSettingPage() {
   const navigate = useNavigate();
-  const { loading, deleteProfilePhoto, updateProfilePhoto,updateUserInfo,changePassword,user } = userAuth();
+  const { loading, deleteProfilePhoto, updateProfilePhoto,updateUserInfo,changePassword,user,fetchUser } = userAuth();
+
+  useEffect(()=>{
+    fetchUser()
+  },[])
 
   const [showUpdateInfo, setShowUpdateInfo] = useState(false);
   const [file, setFile] = useState(null);

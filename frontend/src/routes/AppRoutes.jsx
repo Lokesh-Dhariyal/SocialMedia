@@ -10,9 +10,14 @@ import { AddPostPage } from "../pages/AddPost.page.jsx";
 import { SearchPage } from "../pages/Search.page.jsx";
 import { UserProfilePage } from "../pages/UserProfile.page.jsx";
 import { UserSettingPage } from "../pages/UserSetting.page.jsx";
+import { useEffect } from "react";
 
 function AuthRedirect() {
-  const { isAuthenticated, loading } = userAuth();
+  const { isAuthenticated, loading,fetchUser } = userAuth();
+
+  useEffect(()=>{
+    fetchUser()
+  },[])
 
   if (loading) return <LoadingPage/>;
 

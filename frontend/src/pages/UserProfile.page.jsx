@@ -7,7 +7,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import { FollowButton } from "../components/buttons/FollowButton"
 
 export function UserProfilePage() {
-    const {user, loading, userPost,findUser,followUser} = userAuth()
+  
+    const {user, loading, userPost,findUser,followUser,fetchUser} = userAuth()
     const [fetchedPosts, setFetchedPosts] = useState([])
     const [searchedUser,setSearchedUser] = useState(null)
     const {userId} = useParams()
@@ -15,6 +16,10 @@ export function UserProfilePage() {
     const [isfetching,setIsFetching] = useState(false)
     const [followers,setFollowers] = useState(0)
     const navigate = useNavigate()
+
+    useEffect(()=>{
+      fetchUser()
+    },[])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -61,7 +66,7 @@ export function UserProfilePage() {
         <div className='mx-5 lg:h-50 flex justify-evenly'>
           <div className='w-1/4'>
             <div className='lg:w-10/13 h-full mx-auto'>
-              <img src={searchedUser.profilePhoto} alt="img" className='rounded-full w-full h-20 lg:h-full' />
+              <img src={searchedUser.profilePhoto} alt="img" className='rounded-full lg:w-full w-20 h-20 lg:h-full' />
             </div>
           </div>
           <div className='w-3/4 lg:w-1/2 pl-2 lg:pl-0 flex flex-wrap text-white'>

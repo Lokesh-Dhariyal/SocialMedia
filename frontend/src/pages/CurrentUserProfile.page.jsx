@@ -13,7 +13,7 @@ export function CurrentUserProfilePage() {
   
   useEffect(()=>{
     fetchUser()
-  },[user])
+  },[])
   
   useEffect(() => {
     const fetchAllPosts = async () => {
@@ -44,7 +44,7 @@ export function CurrentUserProfilePage() {
       <div className='mx-5 lg:h-50 flex justify-evenly'>
         <div className='w-1/4'>
           <div className='lg:w-10/13 h-full mx-auto'>
-            <img src={user.profilePhoto} alt="img" className='rounded-full w-full h-20 lg:h-full' />
+            <img src={user.profilePhoto} alt="img" className='rounded-full lg:w-full w-20 h-20 lg:h-full' />
           </div>
         </div>
         <div className='w-3/4 lg:w-1/2 pl-2 lg:pl-0 flex flex-wrap text-white'>
