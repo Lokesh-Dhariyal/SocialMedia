@@ -34,12 +34,12 @@ export function UserProfilePage() {
               setFetchedPosts([])
           }
           const followers = userInfo.data.followers
-          setDoesFollow(followers.includes(user?._id))
+          setDoesFollow(followers.includes(user?._id))//true agr follow krta h
           setIsFetching(false)
         }
         fetchData()
-      }, [userId,user])
-      const sameUser = user?._id?.toString() === userId?.toString();
+      }, [userId])
+      const sameUser = user?._id?.toString() === userId?.toString();//does user have opened his own profile
 
       const toggleFollow = async()=>{
         try {
@@ -71,8 +71,8 @@ export function UserProfilePage() {
           </div>
           <div className='w-3/4 lg:w-1/2 pl-2 lg:pl-0 flex flex-wrap text-white'>
             <div className='w-full lg:h-14 lg:p-2 flex lg:gap-10'>
-              <div className='text-xl lg:text-3xl inline w-1/3'>{searchedUser.username}</div>
-              <div hidden={sameUser}><FollowButton doesFollow={doesFollow} onFollowChange={toggleFollow} userId={userId}/></div>
+              <div className='text-xl lg:text-3xl inline w-full lg:w-1/2'>{searchedUser.username}</div>
+              <div hidden={sameUser} className="mb-1"><FollowButton doesFollow={doesFollow} onFollowChange={toggleFollow} userId={userId}/></div>
             </div>
             <div className='lg:p-2 w-full lg:h-12 text-sm lg:text-2xl flex justify-between'>
               <div>{searchedUser.postCount} Posts</div>

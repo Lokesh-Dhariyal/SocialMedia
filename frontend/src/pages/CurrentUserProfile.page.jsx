@@ -19,7 +19,6 @@ export function CurrentUserProfilePage() {
     const fetchAllPosts = async () => {
       if (!user?._id) return
       const result = await userPost(user._id)
-      console.log(result.data)
       if (result?.data?.length > 0) {
         setFetchedPosts(result.data)
       } else {

@@ -28,7 +28,6 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
     const toggleLike = async () => {
         try {
           const response = await likePost(postId);
-          console.log(response)
           setIsLiked(response.data.liked);
           setLikes(response.data.likeCount);
         } catch (error) {

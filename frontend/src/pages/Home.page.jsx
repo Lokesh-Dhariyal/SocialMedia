@@ -36,6 +36,7 @@ function UserHomePage() {
   if (user.followingCount === 0 && user.postCount === 0) {
     return <NoPost/>
   }
+  // console.log(user)
   return (
     <div className="w-19/20 lg:w-11/16 mx-auto h-fit my-15">
       <div className="mx-5 mt-3 h-fit">

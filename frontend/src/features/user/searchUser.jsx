@@ -14,8 +14,7 @@ export function SearchUser() {
             try {
                 const result = await searchUser({"search":searchValue.toString()});
                 setResults(result.data || []);
-                console.log(searchValue)
-                console.log(results)
+                // console.log("Initial errors are due to search field empty")
             } catch (err) {
                 console.error("Search error:", err);
             }
@@ -24,7 +23,6 @@ export function SearchUser() {
         fetchUsers();
         
       }, [searchValue]);
-  
       if (loading) {
           return <LoadingPage/>
         }

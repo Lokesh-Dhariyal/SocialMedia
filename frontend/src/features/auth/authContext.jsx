@@ -12,7 +12,7 @@ export const AuthProvider = ({children})=>{
     const register = async(formData)=>{
         try {
             const res = await axios.post("/user/register",formData)
-            await fetchUser()
+            // await fetchUser()
             return res.data
         } catch (error) {
             return { success: false, message: error.response?.data?.message || error.message }
@@ -21,7 +21,7 @@ export const AuthProvider = ({children})=>{
     const login = async(formData)=>{
         try {
             const res = await axios.post("/user/login",formData)
-            await fetchUser()
+            // await fetchUser()
             return res.data
         } catch (error) {
             return { success: false, message: error.response?.data?.message || error.message }
