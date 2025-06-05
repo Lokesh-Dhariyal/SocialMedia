@@ -11,7 +11,6 @@ function UserHomePage() {
 
   useEffect(()=>{
     fetchUser()
-    updateToken()
   },[])
 
   useEffect(() => {

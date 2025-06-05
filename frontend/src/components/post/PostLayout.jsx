@@ -20,7 +20,7 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
     }
 
     const [likes, setLikes] = useState(likesCount);
-    const {likePost} = postAuth()
+    const {likePost,commentOnPost} = postAuth()
 
     const {user} = userAuth()
     const [isLiked, setIsLiked] = useState(likedBy.includes(user._id));
@@ -36,16 +36,19 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
       };
 
     const[postComment,setPostComment] = useState(false)
-    const [commentText, setCommentText] = useState("")
+    const [commentText, setCommentText] = useState("Currently Under process")
     const toggleComment = () => {
         setPostComment(prev => !prev)
       }
 
     // const {commentOnPost} = postAuth()
-    const handelSubmit= async(e)=>{
+    const[comments,setComments] = useState(commentCount)
+    const handelComment= (e)=>{
         e.preventDefault()
-        // await commentOnPost(postId)
-        setCommentText("")
+        // const res =  await commentOnPost(postId,{content:commentText})
+        // setComments(res.data.commentCount)
+        // setCommentText("")
+        setCommentText("Repeating!!! Under Process")
     }
 
   return (
@@ -94,10 +97,10 @@ export function PostLayout({username,postId,likedBy,content,description,likesCou
                 </svg>
             </button>
 
-            <div className="pt-3">{commentCount}</div>
+            <div className="pt-3">{comments}</div>
         </div>
 
-        <form onSubmit={handelSubmit} className="mt-3">
+        <form onSubmit={handelComment} className="mt-3">
             <input type="text" 
                 value={commentText}
                 className="w-1/2 pr-12 pl-3 py-2 text-gray-300 outline-none border focus:border-gray-100 shadow-sm rounded-lg"

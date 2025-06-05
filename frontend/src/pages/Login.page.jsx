@@ -6,7 +6,6 @@ function UserLoginPage() {
   const {fetchUser,updateToken} = userAuth()
   useEffect(()=>{
     fetchUser()
-    updateToken()
   },[])
   return (
       <div>

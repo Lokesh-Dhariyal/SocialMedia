@@ -14,9 +14,9 @@ export const PostProvider = ({children})=>{
         }
     }
 
-    const commentOnPost = async(postId)=>{
+    const commentOnPost = async(postId,formData)=>{
         try {
-            const res = await axios.post(`/post/${postId}/comment`)
+            const res = await axios.post(`/post/${postId}/comment`,formData)
             return res.data
         } catch (error) {
             console.error("Fetch user error:", error.response?.data || error.message);

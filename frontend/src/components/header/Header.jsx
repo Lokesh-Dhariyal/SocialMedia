@@ -31,7 +31,7 @@ export const Header = () => {
                             width={120} 
                             height={50}
                             alt="Float UI logo"
-                            className='w-12 h-12 mt-2 lg:mt-1'
+                            className='w-12 h-12 mt-2'
                         />
                         <div className='hidden sm:block text-xl lg:text-3xl p-2 pt-4 lg:pt-'>Staticgram</div>
                     </a>

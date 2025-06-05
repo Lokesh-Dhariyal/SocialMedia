@@ -55,7 +55,17 @@ export function SearchUser() {
             </div>
 
             <div className="h-fit lg:p-5 w-11/12 lg:w-4/5 mx-auto"> 
-                {results.map((userr,index)=>(
+                {results.length===0?(
+                    <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="your-styles"
+                    >
+                    <div className=" lg:w-100 mx-auto mt-10 text-white/70 text-center text-2xl lg:text-3xl">
+                        No User Found!!
+                    </div></motion.div>
+                    ):results.map((userr,index)=>(
                     <SearchUserLayout
                     key={userr._id || index}
                     userId={userr._id}

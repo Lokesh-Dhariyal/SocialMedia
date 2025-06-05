@@ -13,10 +13,11 @@ import { UserSettingPage } from "../pages/UserSetting.page.jsx";
 import { useEffect } from "react";
 
 function AuthRedirect() {
-  const { isAuthenticated, loading,fetchUser } = userAuth();
+  const { isAuthenticated, loading,fetchUser,updateToken } = userAuth();
 
   useEffect(()=>{
     fetchUser()
+    updateToken()
   },[])
 
   if (loading) return <LoadingPage/>;
