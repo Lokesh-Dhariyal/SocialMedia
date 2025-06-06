@@ -5,7 +5,7 @@ import { PostLayout } from "../components/post/PostLayout"
 import { NoPost } from "../components/post/noPost"
 
 function UserHomePage() {
-  const {user,loading,homePage,fetchUser,updateToken} = userAuth()
+  const {user,loading,homePage,fetchUser} = userAuth()
   const [allPosts,setAllPosts] = useState([])
 
 
@@ -53,6 +53,7 @@ function UserHomePage() {
                 setting={user._id === post.owner._id}
                 userId={post.owner._id}
                 profilePhoto={post.owner.profilePhoto}
+                Allcomments={post.comments}
                 />
               ))}
       </div>

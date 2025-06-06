@@ -426,7 +426,16 @@ const searchUser = asyncHandler(async (req, res) => {
 const getPostsByUser = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
-  const posts = await Post.find({ owner: userId }).sort({ createdAt: -1 });
+  const posts = await Post.find({ owner: userId })
+    .sort({ createdAt: -1 })
+    .populate("owner", "username profilePhoto")
+    .populate({
+      path: "comments",
+      populate: {
+        path: "commentedBy",
+        select: "username profilePhoto",
+      },
+    });
 
   if (!posts || posts.length === 0) {
     throw new apiError(400, "No post found");

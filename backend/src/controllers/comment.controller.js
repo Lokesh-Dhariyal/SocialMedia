@@ -24,7 +24,11 @@ const writeComment = asyncHandler(async(req,res)=>{
         $inc: { commentCount: 1 },
         },
         {new:true}
-    );
+    ).select("_id comments commentCount")
+    .populate({path:"comments",populate:{
+        path:"commentedBy",
+        select:"username profilePhoto"
+    }})
 
     if(!post){
         throw new apiError(400,"no post available")
@@ -32,7 +36,7 @@ const writeComment = asyncHandler(async(req,res)=>{
 
     return res
     .status(200)
-    .json(new apiResponse(200,{commentId:comment.id,commentCount:post.commentCount},"Commented Successfully"))
+    .json(new apiResponse(200,post,"Commented Successfully"))
 })
 
 //⁡⁢⁢⁢⁡⁢⁢⁢𝗨𝗽𝗱𝗮𝘁𝗲⁡⁢⁢⁢ 𝗖𝗼𝗺𝗺𝗲𝗻𝘁⁡
@@ -71,16 +75,28 @@ const deleteComment = asyncHandler(async(req,res)=>{
     if(userId.toString() !== comment.commentedBy.toString() && userId.toString() !== post.owner.toString()){
         throw new  apiError(400,"You Cant delete this comment")
     }
-
-    await Post.findByIdAndUpdate(comment.post, {
-      $pull: { comments: comment._id },
-      $inc: { commentCount: -1 },
+    
+    const postInfo = await Post.findByIdAndUpdate(
+        comment.post,
+        {
+            $pull: { comments: comment._id },
+            $inc: { commentCount: -1 },
+        },
+        { new: true }
+    )
+    .select("_id comments commentCount")
+    .populate({
+        path: "comments",
+        populate: {
+            path: "commentedBy",
+            select: "username profilePhoto",
+        },
     });
     await comment.deleteOne()
 
     return res
     .status(200)
-    .json(new apiResponse(200,{fromPost:post._id},"Comment successfully deleted from the post"))
+    .json(new apiResponse(200,postInfo,"Comment successfully deleted from the post"))
 })
 
 

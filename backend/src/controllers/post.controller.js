@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.util.js";
 import { Post } from "../models/post.model.js";
 import { uploadToCloudinary,deleteFromCloudinary } from "../utils/cloudinary.util.js";
 import { User } from "../models/user.model.js";
+import { populate } from "dotenv";
 
 //⁡⁢⁢⁢𝗖𝗿𝗲𝗮𝘁𝗲 𝗣𝗼𝘀𝘁⁡
 const createPost = asyncHandler(async(req,res)=>{
@@ -155,6 +156,14 @@ const getPost = asyncHandler(async(req,res)=>{
   const postId = req.params.id
 
   const postInfo = await Post.findById(postId)
+  .populate("owner", "username profilePhoto")
+  .populate({
+    path:"comments",
+      populate:{
+        path:"commentedBy",
+        select:"username profilePhoto"
+      }
+  })
   if(!postInfo){
     throw new apiError(400,"Post donot exist")
   }

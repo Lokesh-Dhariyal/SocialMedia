@@ -95,6 +95,7 @@ export function CurrentUserProfilePage() {
             createdAt={post.createdAt}
             setting="true"
             userId={user._id}
+            Allcomments={post.comments}
           />
         ))}
       </div>

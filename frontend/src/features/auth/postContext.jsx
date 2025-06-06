@@ -23,7 +23,7 @@ export const PostProvider = ({children})=>{
         }
     }
 
-    const fetchPost = async(postId)=>{
+    const fetchPost = async(postId)=>{ //get post in backend
         try {
             const res = await axios.get(`/post/${postId}`)
             return res.data
@@ -50,8 +50,17 @@ export const PostProvider = ({children})=>{
         }
     }
 
+    const deleteComment = async(postId,commentId)=>{
+        try {
+            const res = await axios.post(`/post/${postId}/delete-comment/${commentId}`)
+            return res.data
+        } catch (error) {
+            console.error("Fetch user error:", error.response?.data || error.message);
+        }
+    }
+
     return (
-        <PostContext.Provider value={{commentOnPost, fetchPost, likePost,uploadPost,deletePost}}>
+        <PostContext.Provider value={{commentOnPost, fetchPost, likePost,uploadPost,deletePost,deleteComment}}>
             {children}
         </PostContext.Provider>
     )

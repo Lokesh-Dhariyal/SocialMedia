@@ -71,7 +71,7 @@ export const Header = () => {
                                 </li></>))}
                         </ul>
                     </div>
-                    <div className="text-sm lg:text-lg lg:pl-25 flex-1 pt-6 font-bold lg:pt-3">
+                    <div className="text-sm lg:text-lg flex-1 pt-6 font-bold lg:pt-3">
                         <ul className="justify-center flex space-x-5 lg:space-x-10 ">
                             {   isAuthenticated?navigation.map((item, idx) => {
                                     return (

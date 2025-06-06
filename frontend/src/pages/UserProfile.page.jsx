@@ -122,6 +122,7 @@ export function UserProfilePage() {
               setting={sameUser}
               userId={searchedUser._id}
               profilePhoto={searchedUser.profilePhoto}
+              Allcomments={post.comments}
             />
           ))}
         </div>
