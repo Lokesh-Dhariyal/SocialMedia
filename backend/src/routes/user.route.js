@@ -13,6 +13,7 @@ import {
   userInfo,
   searchUser,
   getPostsByUser,
+  deleteUser
 } from "../controllers/user.controller.js";
 import {jwtVerification} from "../middlewares/auth.middleware.js"
 import { followUnfollow } from "../controllers/followers.controller.js";
@@ -47,4 +48,7 @@ userRoute.route("/home").get(jwtVerification,allPosts)
 userRoute.route("/search").post(searchUser)
 //User post
 userRoute.route("/:id/posts").get(getPostsByUser)
+
+//Delete User
+userRoute.route("/delete-user").post(jwtVerification,deleteUser);
 export { userRoute }; 

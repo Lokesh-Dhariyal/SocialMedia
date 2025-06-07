@@ -14,6 +14,9 @@ import {
 import { User } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { Post } from "../models/post.model.js";
+import { Follower } from "../models/followers.model.js";
+import { Like } from "../models/like.model.js";
+import { Comment } from "../models/comment.model.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -445,6 +448,58 @@ const getPostsByUser = asyncHandler(async (req, res) => {
     .status(200)
     .json(new apiResponse(200, posts, "Posts fetched successfully"));
 });
+//Delete User
+const deleteUser = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new apiError(400, "User not found");
+  }
+
+  await Post.deleteMany({ owner: userId });
+
+  const userLikes = await Like.find({ likedBy: userId });
+  const userComments = await Comment.find({ commentedBy: userId });
+
+  const likeIds = userLikes.map((like) => like._id);
+  const commentIds = userComments.map((comment) => comment._id);
+
+  // Clean from posts
+  await Post.updateMany(
+    { likes: userId  },
+    { $pull: { likes: userId  }, $inc: { likeCount: -1 } }
+  );
+  await Post.updateMany(
+    { comments: { $in: commentIds } },
+    { $pull: { comments: { $in: commentIds } }, $inc: { commentCount: -1 } }
+  );
+  await Like.deleteMany({ _id: { $in: likeIds } });
+  await Comment.deleteMany({ _id: { $in: commentIds } });
+  await Follower.deleteMany({ user: userId });
+
+
+  await User.updateMany(
+    { followers: userId },
+    {
+      $pull: { followers: userId },
+      $inc: { followerCount: -1 },
+    }
+  );
+
+  await User.updateMany(
+    { following: userId },
+    {
+      $pull: { following: userId },
+      $inc: { followingCount: -1 },
+    }
+  );
+  await User.findByIdAndDelete(userId);
+
+  return res
+    .status(200)
+    .json(new apiResponse(200, {}, "User deleted successfully"));
+});
 export {
   registerUser,
   loginUser,
@@ -458,4 +513,5 @@ export {
   userInfo,
   searchUser,
   getPostsByUser,
+  deleteUser,
 };

@@ -136,8 +136,17 @@ export const AuthProvider = ({children})=>{
         return { success: false, message: error.response?.data?.message || error.message };
       }
     }
+
+    const deleteUser = async()=>{
+      try {
+        const res = await axios.post(`/user/delete-user`)
+        return res.data
+      } catch (error) {
+        return { success: false, message: error.response?.data?.message || error.message };
+      }
+    }
     return (
-        <AuthContext.Provider value={{user,loading,isAuthenticated,register,login,fetchUser,logout,updateToken,findUser,userPost,searchUser,followUser,homePage,updateProfilePhoto,deleteProfilePhoto,updateUserInfo,changePassword}}>
+        <AuthContext.Provider value={{user,loading,isAuthenticated,register,login,fetchUser,logout,updateToken,findUser,userPost,searchUser,followUser,homePage,updateProfilePhoto,deleteProfilePhoto,updateUserInfo,changePassword,deleteUser}}>
             {children}
         </AuthContext.Provider>
     )

@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 
 export function UserSettingPage() {
   const navigate = useNavigate();
-  const { loading, deleteProfilePhoto, updateProfilePhoto,updateUserInfo,changePassword,user,fetchUser } = userAuth();
+  const { loading, deleteProfilePhoto, updateProfilePhoto,updateUserInfo,changePassword,user,fetchUser,logout,deleteUser } = userAuth();
 
   useEffect(()=>{
     fetchUser()
@@ -115,6 +115,10 @@ const handlePasswordChange = (e) => {
     }
   };
 
+  //Delete User
+const [showDeleteUser, setShowDeleteUser] = useState(false);
+
+
   if (loading || isUploading || !user) return <LoadingPage />;
 
   return (
@@ -130,7 +134,7 @@ const handlePasswordChange = (e) => {
         <button
           type="button"
           onClick={() => setShowUpdateInfo(!showUpdateInfo)}
-          className=" ml-4 h-10 py-2 lg:w-1/4 px-4 bg-[#bdbcbc] hover:bg-[#a8a8a8] text-black rounded-md shadow hover:cursor-pointer"
+          className=" lg:ml-4 h-10 py-2 lg:w-1/4 px-4 bg-[#bdbcbc] hover:bg-[#a8a8a8] text-black rounded-md shadow hover:cursor-pointer"
         >
           Update Photo
         </button>
@@ -289,6 +293,50 @@ const handlePasswordChange = (e) => {
             </motion.div>
         )}
         
+      </div>
+
+      {/* Delete User */}
+      <div className='border-b border-white/40 w-11/12 mx-auto my-5 p-3'>
+      <div className="text-xl lg:text-2xl lg:mr-5 mt-2 w-1/2 inline-block">Want to delete User</div>
+        <button
+          type="button"
+          onClick={() =>  setShowDeleteUser(!showDeleteUser)}
+          className="lg:ml-4 h-10 lg:w-1/4 py-2 px-4 bg-[#ec5050] hover:bg-[#d04545] text-black rounded-md shadow hover:cursor-pointer"
+        >
+          Delete User
+        </button>
+        
+            {showDeleteUser && (
+              <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="your-styles"
+            >
+          <div className=' mt-3 text-center'>
+          <div className='text-xl lg:text-2xl'>Are you sure you want to leave us?</div>
+            <button
+                type="button"
+                onClick={async() =>{
+                  await deleteUser()
+                  await logout()
+                  navigate("/login")
+                }}
+                className="mt-4 h-10 mx-10 px-4 bg-[#ec5050] hover:bg-[#d04545] text-black rounded-md shadow hover:cursor-pointer"
+              >
+                Yes
+              </button>
+
+            <button
+              type="button"
+              onClick={() =>  setShowDeleteUser(!showDeleteUser)}
+              className="mt-4 mx-10 h-10 px-5 bg-[#74b17b] hover:bg-[#5e9a64] text-black rounded-md shadow hover:cursor-pointer"
+            >
+              No
+            </button>
+        </div>
+        </motion.div>
+        )}
       </div>
     </div>
     </motion.div>

@@ -24,7 +24,7 @@ const Register = ()=>{
     const handleSubmit = async (e)=>{
         e.preventDefault();
         setLoading(true)
-        console.log("data: ",formData)
+        // console.log("data: ",formData)
         const res = await register(formData);
         setLoading(false)
         if(res.success){

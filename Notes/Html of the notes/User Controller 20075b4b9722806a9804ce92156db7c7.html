@@ -1,0 +1,686 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>User Controller</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="20075b4b-9722-806a-9804-ce92156db7c7" class="page sans"><header><h1 class="page-title">User Controller</h1><p class="page-description"></p></header><div class="page-body"><p id="20075b4b-9722-80a2-8453-de973dd1f917" class="">before this set routes and in app.js - </p><p id="20075b4b-9722-807f-b660-cc3e9086dca2" class=""><strong><span style="border-bottom:0.05em solid">Register User : </span></strong>This function handles <strong>user registration</strong> in a secure and validated way<br/><br/></p><ol type="1" id="20075b4b-9722-8069-94f1-fb861e665ad1" class="numbered-list" start="1"><li>Check all fields exist that you want.</li></ol><ol type="1" id="20075b4b-9722-807f-9bf0-d86ebdece773" class="numbered-list" start="2"><li>Check if user already exist.(usrname/email).</li></ol><ol type="1" id="20075b4b-9722-8084-beaa-c2fc38b82200" class="numbered-list" start="3"><li>Upload the photo to cloudinary. if needed</li></ol><ol type="1" id="20075b4b-9722-8062-b0c3-dff6e911d05f" class="numbered-list" start="4"><li>password hashing etc.</li></ol><ol type="1" id="20075b4b-9722-80cf-9a58-fb1ae0b25a3e" class="numbered-list" start="5"><li>check if user is registered successfully</li></ol><ol type="1" id="20075b4b-9722-8079-9d52-f561d2ac61e4" class="numbered-list" start="6"><li>return the res without password and  tokens.</li></ol><p id="20275b4b-9722-80ef-9c80-e9b69e986b3c" class="">
+</p><ul id="20275b4b-9722-8064-b50a-fccb5a396eee" class="bulleted-list"><li style="list-style-type:disc"><strong>Validate Input:</strong><ul id="20275b4b-9722-80e7-a1ba-cf03df5b96e4" class="bulleted-list"><li style="list-style-type:circle">Checks that all required fields (<code>username</code>, <code>email</code>, <code>password</code>, <code>fullName</code>) are present and not empty.</li></ul></li></ul><ul id="20275b4b-9722-8044-a760-c18666eb43b0" class="bulleted-list"><li style="list-style-type:disc"><strong>Check Uniqueness:</strong><ul id="20275b4b-9722-809b-9e9a-f715ce6d4336" class="bulleted-list"><li style="list-style-type:circle">Ensures the <code>username</code> and <code>email</code> are not already taken in the database.</li></ul></li></ul><ul id="20275b4b-9722-8034-8e7e-c1a9c15c6ce1" class="bulleted-list"><li style="list-style-type:disc"><strong>Hash Password:</strong><ul id="20275b4b-9722-8092-84e9-dc41469271e8" class="bulleted-list"><li style="list-style-type:circle">Uses a hashing function to securely hash the user’s password before saving.</li></ul></li></ul><ul id="20275b4b-9722-8075-a887-c90d2877d8e9" class="bulleted-list"><li style="list-style-type:disc"><strong>Create User:</strong><ul id="20275b4b-9722-801c-9567-c567c427affc" class="bulleted-list"><li style="list-style-type:circle">Saves the new user with default values for profile photo and cover image.</li></ul></li></ul><ul id="20275b4b-9722-80a2-8e96-dd9f996a58cb" class="bulleted-list"><li style="list-style-type:disc"><strong>Sanitize Response:</strong><ul id="20275b4b-9722-8072-b462-cf9686c15df6" class="bulleted-list"><li style="list-style-type:circle">Fetches the newly created user (excluding password and refresh token), and returns a success response.</li></ul></li></ul><hr id="20275b4b-9722-8074-8022-d13a06380f3b"/><p id="20275b4b-9722-80d6-be48-c3978859c9ff" class=""><strong><span style="border-bottom:0.05em solid">Login User: </span></strong>This function handles the <strong>login process</strong> for users by checking their credentials, verifying their password, and issuing JWT tokens if everything checks out.<br/><br/></p><ol type="1" id="20175b4b-9722-80f7-b6c5-edfd147652a0" class="numbered-list" start="1"><li>Check all fields exist.</li></ol><ol type="1" id="20175b4b-9722-80e3-ad9c-ebac27f36634" class="numbered-list" start="2"><li>search if user exist(username or email)</li></ol><ol type="1" id="20175b4b-9722-80bc-8241-f35a9ef16215" class="numbered-list" start="3"><li>check the password</li></ol><ol type="1" id="20175b4b-9722-8039-b79b-d9fb06d6e06f" class="numbered-list" start="4"><li>generate the tokens and send them to cookies when you return(create method that generate tokens for you and returns both tokens, and update the refresh token on the db of the user too.</li></ol><ol type="1" id="20175b4b-9722-801b-abc1-d898df1e16a3" class="numbered-list" start="5"><li>return res</li></ol><p id="20275b4b-9722-8056-ae11-c7eb00378858" class="">
+</p><ul id="20275b4b-9722-80e5-afda-f84a0ed54950" class="bulleted-list"><li style="list-style-type:disc"><strong>Validate Input:</strong><ul id="20275b4b-9722-8061-82f8-eddb97b6ea55" class="bulleted-list"><li style="list-style-type:circle">Ensures both <code>credentials</code> (which can be username or email) and <code>password</code> are present and not empty.</li></ul></li></ul><ul id="20275b4b-9722-805c-b135-c19aeb89de56" class="bulleted-list"><li style="list-style-type:disc"><strong>Find User:</strong><ul id="20275b4b-9722-808b-9248-ce31c352743b" class="bulleted-list"><li style="list-style-type:circle">Searches the database for a user using either the <code>username</code> or <code>email</code>.</li></ul></li></ul><ul id="20275b4b-9722-80c7-9d09-f7f118667427" class="bulleted-list"><li style="list-style-type:disc"><strong>Check Existence:</strong><ul id="20275b4b-9722-8015-be3b-efffde479ddd" class="bulleted-list"><li style="list-style-type:circle">If the user isn’t found, it throws an error: <code>&quot;User does not exist&quot;</code>.</li></ul></li></ul><ul id="20275b4b-9722-8025-b02c-e701c194fbc8" class="bulleted-list"><li style="list-style-type:disc"><strong>Verify Password:</strong><ul id="20275b4b-9722-8000-98b9-e37071608042" class="bulleted-list"><li style="list-style-type:circle">Compares the given password with the hashed one stored in the database using <code>isPasswordCorrect()</code>.</li></ul></li></ul><ul id="20275b4b-9722-80ff-92df-cd9d74307db9" class="bulleted-list"><li style="list-style-type:disc"><strong>Generate Tokens:</strong><ul id="20275b4b-9722-80db-99e3-f9a011c4012d" class="bulleted-list"><li style="list-style-type:circle">If the password is valid, it generates a <strong>refresh token</strong> and an <strong>access token</strong> using <code>generateAccessAndRefreshTokens()</code>.</li></ul></li></ul><ul id="20275b4b-9722-80ca-92b1-ec8790d5aa1b" class="bulleted-list"><li style="list-style-type:disc"><strong>Sanitize User:</strong><ul id="20275b4b-9722-80b6-a2de-f7d2e62d7799" class="bulleted-list"><li style="list-style-type:circle">Retrieves the user again without sensitive data like <code>password</code> and <code>refreshToken</code>.</li></ul></li></ul><ul id="20275b4b-9722-80ac-858f-e9dc5b93de02" class="bulleted-list"><li style="list-style-type:disc"><strong>Send Response:</strong><ul id="20275b4b-9722-809a-b1dd-df339657a781" class="bulleted-list"><li style="list-style-type:circle">Sets the tokens in cookies and also sends them in the JSON response.</li></ul></li></ul><hr id="20275b4b-9722-8059-9e9a-ecabe099f6fa"/><p id="20275b4b-9722-80ae-864b-cf5c2ee4f6f1" class=""><strong><span style="border-bottom:0.05em solid">Creation of auth middleware : </span></strong>This middleware function <strong>verifies the user&#x27;s access token</strong> before allowing them to access protected routes. It checks the token, verifies the user, and attaches the user data to the request if all is well.<br/><br/></p><p id="20275b4b-9722-802e-b087-cea2de861242" class="">if the use is online than it can take the info from the user by there token and comparing them to the  token in .env now if it match it will give the info of the user excluding its password and token. If you want to use the ref.user than you have to use the exported middleware function on the route so that it can ask the middleware for the user data.</p><p id="20275b4b-9722-803e-af09-ed1bdde7f7f2" class="">
+</p><hr id="20275b4b-9722-8090-b370-c48510d2f047"/><p id="20175b4b-9722-8065-ad52-dbb6c948705a" class=""><strong><span style="border-bottom:0.05em solid">Logout User: </span></strong>This function <strong>logs out the authenticated user</strong> by removing their refresh token and clearing auth cookies</p><ol type="1" id="20175b4b-9722-80f0-91b2-ec98ffc01c1d" class="numbered-list" start="1"><li>check if user exist by using ref.user if not than user is not online or invalid token</li></ol><ol type="1" id="20275b4b-9722-806f-b990-e09d48e6dd8a" class="numbered-list" start="2"><li>if token match than delete the token from the cookie and also from the db</li></ol><hr id="20275b4b-9722-8065-9ebc-c3a0a295ef63"/><p id="20275b4b-9722-80d3-872a-fa8bd4ac597a" class=""><strong><span style="border-bottom:0.05em solid">Updating tokens</span></strong> : This function lets users stay logged in <strong>without re-authenticating</strong>, by securely refreshing their tokens if the refresh token is valid.</p><p id="20275b4b-9722-80e9-9a40-d7bb73c1d64f" class="">when the user comes online again it can directly access the app but as if he did we have to check the tokens that are stored in his cokkie and than if they are correct we can update them again so that the time can reset and also new tokens can be generated.</p><ol type="1" id="20275b4b-9722-80bf-ad2a-f750330a9488" class="numbered-list" start="1"><li>Will use req.cookie  so that we can get the info of the tokens.</li></ol><ol type="1" id="20275b4b-9722-80ff-bd40-e156369c2038" class="numbered-list" start="2"><li>if we get the token than we have to compare it with the .env token, if they match progress.</li></ol><ol type="1" id="20275b4b-9722-80b1-8405-eae3294d7d8e" class="numbered-list" start="3"><li>By using the token payloads such as id we can find user if we found fine if not error. and also compare the refresh token from the db too to see that if it is expired or not.</li></ol><ol type="1" id="20275b4b-9722-80eb-9342-c424759f658a" class="numbered-list" start="4"><li>generate new tokens and update both tokens and send new tokens to the cookie.</li></ol><p id="20275b4b-9722-8011-89ed-f9a98dcbecbe" class="">This function refreshes a user&#x27;s authentication tokens. When an access token expires, the user can send their refresh token. The server checks if the token is present, valid, and matches what&#x27;s stored in the database.</p><p id="20275b4b-9722-8058-8d0c-c22e74ed57cb" class="">If everything checks out, the server generates a <strong>new access token</strong> and a <strong>new refresh token</strong>, sends them back to the client, and sets them in cookies. This allows the user to stay logged in without having to re-enter their credentials.</p><p id="20275b4b-9722-8052-9805-f1ab31eb3a73" class="">If anything’s off — like a missing token, an invalid one, or a mismatch — the system blocks the request, keeping things tight and secure.</p><hr id="20275b4b-9722-8000-aa24-c8b3ae3c5e9c"/><p id="20275b4b-9722-803c-9d9a-e624f2ab8e58" class=""><strong><span style="border-bottom:0.05em solid">Change Password</span></strong><strong> :</strong> take new password and previouts password from the user.  than check the password of the user stored in the database, if correct replace the new password (hashed) with the password in the database. update it (validateBeforeSave:false) so that it do not need to validate the user and the password</p><hr id="20375b4b-9722-80e1-b1ef-eb909730955a"/><p id="20375b4b-9722-80cd-8711-c37c154d8e04" class=""><strong><span style="border-bottom:0.05em solid">Update Profile :</span></strong>  Take the things that you need ie, fullName, email, bio etc.. but dont let it empty in frontend the default value should be the already exited value. </p><p id="20375b4b-9722-8001-b4ef-e2e30779b2c1" class="">also update the profile photo and cover photo, as the default profile is something, we dont want to delete it if it replace so we uses conditions.. if we are changing the pictures than we want to delete them from the cloudinary too so, making a function <strong>deleteFromCloudinary </strong>is made, that takes the link of the image, and convert it to the location of the picture in the cloudinary and deletes it.</p><p id="20375b4b-9722-807c-9c61-c80ceaf9db79" class="">Than update the user with the new details.</p><hr id="20375b4b-9722-80bc-b523-f349978ddb65"/><p id="20375b4b-9722-80ad-a257-e3cce3198e6d" class=""><strong><span style="border-bottom:0.05em solid">Delete Profile Photo or Cover</span></strong> : we can do it just by updating the user and also deleting it from the cloudinary , if it is default profile picture we will check for it and will not delete it.</p><p id="20375b4b-9722-80aa-bbcb-ef7a99ce3da5" class="">if we delete from cloudinary it will return ( {result:”ok”}) if successful.</p><hr id="20375b4b-9722-8078-9f97-d8c8e31e432a"/><p id="20375b4b-9722-8065-b4fe-dfa6bb306bae" class=""><strong><span style="border-bottom:0.05em solid">current User details </span></strong><strong>: </strong>This will give the details of the current user. this can be done just by returning the req.user</p><hr id="20375b4b-9722-80d1-beaa-ce8ca4f253f7"/><p id="20375b4b-9722-8079-8d72-ee82ff0aa9be" class=""><strong><span style="border-bottom:0.05em solid">Summery </span></strong><strong>:</strong></p><p id="20675b4b-9722-8069-a4c0-dbe8f14b01bf" class="">This page details various user controller functions for authentication and profile management:</p><ul id="20675b4b-9722-80aa-bf54-c8a62a45e3c4" class="bulleted-list"><li style="list-style-type:disc">Register User: Handles new user registration with field validation, password hashing, and photo upload</li></ul><ul id="20675b4b-9722-805f-ac52-cfbe765f6904" class="bulleted-list"><li style="list-style-type:disc">Login User: Manages user authentication, token generation, and secure cookie handling</li></ul><ul id="20675b4b-9722-804c-9618-f1237860e775" class="bulleted-list"><li style="list-style-type:disc">Auth Middleware: Verifies user tokens for protected route access</li></ul><ul id="20675b4b-9722-80d2-97e7-fdd2216a1712" class="bulleted-list"><li style="list-style-type:disc">Token Management:<ul id="20675b4b-9722-8053-9c99-db8fba134c88" class="bulleted-list"><li style="list-style-type:circle">Logout: Removes refresh tokens and clears auth cookies</li></ul><ul id="20675b4b-9722-8036-b4b6-c9e0bba4b876" class="bulleted-list"><li style="list-style-type:circle">Token Updates: Refreshes tokens for continued authentication</li></ul></li></ul><ul id="20675b4b-9722-8078-b320-c72390178caf" class="bulleted-list"><li style="list-style-type:disc">Profile Management:<ul id="20675b4b-9722-8006-9796-c672a29b137a" class="bulleted-list"><li style="list-style-type:circle">Password Changes: Validates and updates user passwords</li></ul><ul id="20675b4b-9722-808f-9cce-f2dacce5a3da" class="bulleted-list"><li style="list-style-type:circle">Profile Updates: Handles profile data and photo updates</li></ul><ul id="20675b4b-9722-800d-ae67-dc5efa3c4285" class="bulleted-list"><li style="list-style-type:circle">Photo Management: Controls profile/cover photo deletion</li></ul><ul id="20675b4b-9722-8038-9405-e0e37a327683" class="bulleted-list"><li style="list-style-type:circle">User Details: Provides current user information</li></ul></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
