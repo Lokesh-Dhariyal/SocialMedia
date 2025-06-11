@@ -23,10 +23,10 @@ export function CommentLayout({content,profilePhoto,username,userId,postId,postU
   return (
     <div className='border-b border-white/30 h-fit pb-1 text-white flex mb-5'>
         <div className='flex w-auto h-fit'>
-            <a href={`/user/${userId}`}><img src={profilePhoto} alt="" className='h-10 w-10 rounded-full'/></a>
+            <a href={`/profile/${userId}`}><img src={profilePhoto} alt="" className='h-10 w-10 rounded-full'/></a>
         </div>
         <div className='h-fit w-4/5 mx-3'>
-            <a href={`/user/${userId}`} className='font-bold'>{username}</a>
+            <a href={`/profile/${userId}`} className='font-bold'>{username}</a>
             <div>{content}</div>
         </div>
 

@@ -38,7 +38,7 @@ export function UserProfilePage() {
           setIsFetching(false)
         }
         fetchData()
-      }, [userId])
+      }, [userId,user])
       const sameUser = user?._id?.toString() === userId?.toString();//does user have opened his own profile
 
       const toggleFollow = async()=>{
@@ -54,6 +54,7 @@ export function UserProfilePage() {
     if (loading || !searchedUser ||!user || isfetching) {
       return <LoadingPage />
     }
+    console.log(doesFollow)
   
     return (
       <motion.div

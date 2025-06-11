@@ -84,7 +84,7 @@ export function PostLayout({
           <a href={`/profile/${userId}`}>{username}</a>
         </div>
         {setting && (
-          <div className="pt-1">
+          <div className="pt-1 ml-6 lg:ml-0">
             <PostSetting postId={postId} />
           </div>
         )}
